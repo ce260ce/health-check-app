@@ -7,6 +7,7 @@ import HealthTable from "../components/HealthTable";
 import { useNavigate } from "react-router-dom";
 
 function ListPage() {
+    const API_URL = process.env.REACT_APP_API_URL;
     const navigate = useNavigate();
     const [records, setRecords] = useState([]);
     const [names, setNames] = useState([]);
@@ -32,12 +33,12 @@ function ListPage() {
     const uniqueDates = getDatesInMonth(year, month);
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/api/health?year=${year}&month=${month}`)
+        axios.get(`${API_URL}/api/health?year=${year}&month=${month}`)
             .then(res => setRecords(res.data));
     }, [year, month]);
 
     useEffect(() => {
-        axios.get("http://localhost:5000/api/names")
+        axios.get(`${API_URL}/api/names`)
             .then(res => setNames(res.data.map(n => n.name)));
     }, []);
 

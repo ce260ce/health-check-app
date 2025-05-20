@@ -3,11 +3,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function SelectUserPage() {
+    const API_URL = process.env.REACT_APP_API_URL;
     const [names, setNames] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get("http://localhost:5000/api/names")
+        axios.get(`${API_URL}/api/names`)
             .then(res => setNames(res.data.map(n => n.name)));
     }, []);
 

@@ -5,6 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function AdminPage() {
+    const API_URL = process.env.REACT_APP_API_URL;
     const [names, setNames] = useState([]);
     const [selected, setSelected] = useState([]);
     const navigate = useNavigate();
@@ -13,7 +14,7 @@ function AdminPage() {
     const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
     useEffect(() => {
-        axios.get("http://localhost:5000/api/names")
+        axios.get(`${API_URL}/api/names`)
             .then(res => setNames(res.data.map(n => n.name)));
     }, []);
 
@@ -27,7 +28,7 @@ function AdminPage() {
 
     const handleSubmit = async () => {
         for (const name of selected) {
-            await axios.post("http://localhost:5000/api/health", {
+            await axios.post(`${API_URL}/api/health`, {
                 name,
                 condition: "年休",
                 task: "",
