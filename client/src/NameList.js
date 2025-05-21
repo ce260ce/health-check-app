@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 function NameList() {
     const [newName, setNewName] = useState("");
     const [names, setNames] = useState([]);
 
     const fetchNames = async () => {
-        const res = await axios.get("http://localhost:5000/api/names");
+        const res = await axios.get(`${API_URL}/api/names`);
         setNames(res.data);
     };
 
@@ -16,13 +18,13 @@ function NameList() {
 
     const handleAdd = async () => {
         if (!newName.trim()) return;
-        await axios.post("http://localhost:5000/api/names", { name: newName });
+        await axios.post(`${API_URL}/api/names`, { name: newName });
         setNewName("");
         fetchNames();
     };
 
     const handleDelete = async (id) => {
-        await axios.delete(`http://localhost:5000/api/names/${id}`);
+        await axios.delete(`${API_URL}/api/names/${id}`);
         fetchNames();
     };
 
@@ -50,4 +52,3 @@ function NameList() {
 }
 
 export default NameList;
-

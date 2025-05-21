@@ -6,32 +6,36 @@ export const useHealthRecords = (year, month) => {
     const [records, setRecords] = useState([]);
     const [names, setNames] = useState([]);
 
+    // useHealthRecords.js
+    const API_URL = process.env.REACT_APP_API_URL;
+
     const fetchRecords = useCallback(async () => {
         try {
-            const res = await axios.get(`http://localhost:5000/api/health?year=${year}&month=${month}`);
+            const res = await axios.get(`${API_URL}/api/health?year=${year}&month=${month}`);
             setRecords(res.data);
         } catch (err) {
             console.error("健康チェックデータ取得エラー", err);
         }
-    }, [year, month]); // ← 依存配列を指定！
+    }, [API_URL, year, month]);
 
     const fetchNames = useCallback(async () => {
         try {
-            const res = await axios.get("http://localhost:5000/api/names");
+            const res = await axios.get(`${API_URL}/api/names`);
             setNames(res.data.map(n => n.name));
         } catch (err) {
             console.error("氏名取得エラー", err);
         }
-    }, []);
+    }, [API_URL]);
 
     const postRecord = async (record) => {
         try {
-            await axios.post("http://localhost:5000/api/health", record);
+            await axios.post(`${API_URL}/api/health`, record);
             await fetchRecords();
         } catch (err) {
             console.error("送信失敗", err);
         }
     };
+
 
     useEffect(() => {
         fetchRecords();
